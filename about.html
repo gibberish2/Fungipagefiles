@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle"></title> 
+    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/5e55b3a9e809de5c2b9cb1a54be03dc7">
+    
+    <script>
+    (function() {
+        const themes = {
+            ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
+            forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
+            sunset:   { '--bg-color': '#451a03', '--nav-color': '#78350f', '--accent-color': '#fbbf24' },
+            midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
+            cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
+            electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
+            seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
+        };
+        const saved = localStorage.getItem('userTheme') || 'ocean';
+        const root = document.documentElement;
+        const theme = themes[saved] || themes.ocean;
+        for (let prop in theme) { root.style.setProperty(prop, theme[prop]); }
+
+        const isCloaked = localStorage.getItem('isCloaked');
+        function applyCloak(title, icon) {
+            document.title = title;
+            const fav = document.getElementById('favicon');
+            if (fav) fav.href = icon;
+            document.addEventListener('DOMContentLoaded', () => {
+                document.title = title;
+                const favLoaded = document.getElementById('favicon');
+                if (favLoaded) favLoaded.href = icon;
+            });
+        }
+        if (isCloaked === 'true') {
+            applyCloak("IXL | Dashboard", "https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1");
+        } else {
+            applyCloak("About | Fungi", "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd");
+        }
+    })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { background-color: var(--bg-color); color: white; margin: 0; font-family: 'Comic Sans MS', cursive; }
+        .content { text-align: center; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .home-img { border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-top: 20px; max-width: 100%; border: 2px solid var(--accent-color); }
+        h1 { font-size: 48px; margin-bottom: 10px; }
+        a { color: var(--accent-color); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="home.html" class="nav-link" title = "Brings you to the home page" alt = "home page navigation button">Home</a>
+        <a href="launcher.html" class="nav-link" title = "Brings you to the games page" alt = "games page navigation button">Games</a>
+        <a href="tools.html" class="nav-link" title = "Brings you to the tools page" alt = "tools page navigation button">Tools</a>
+        <a href="music.html" class="nav-link" title = "Brings you to the music page" alt = "music page navigation button">Music</a>
+        <a href="about.html" class="nav-link active" title = "Brings you to the about page" alt = "about page navigation button">About</a>
+        <a href="settings.html" class="nav-link" title = "Brings you to the settings page" alt = "settings page navigation button">Settings</a>
+    </div>
+</nav>
+
+<div class="content">
+    <h1>About</h1>
+    <p>Games are from the </p>
+    <a href="https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/edit?tab=t.0" target="_blank" rel="noopener noreferrer">The Ultimate Game Stash</a>
+    <p>The logo for Fungi is by me! </p>
+    
+</div>
+
+<!-- GLOBAL MUSIC POPUP -->
+<div id="music-popup" class="popup-player">
+    <div class="resizer t"></div><div class="resizer b"></div>
+    <div class="resizer l"></div><div class="resizer r"></div>
+    <div class="resizer tl"></div><div class="resizer tr"></div>
+    <div class="resizer bl"></div><div class="resizer br"></div>
+
+    <div class="popup-header" style="cursor: move;">
+        <span id="popup-title">Nothing Playing</span>
+        <button onclick="togglePopup(false)" style="background:#DE3412; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">×</button>
+    </div>
+    
+    <div class="popup-controls">
+        <button onclick="skip(-10)" class="ctrl-btn">«</button>
+        <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
+        <button onclick="skip(10)" class="ctrl-btn">»</button>
+    </div>
+
+    <div id="playlist" style="margin-top:10px; max-height: 500px; overflow-y: fixed; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; width: 100%;">
+        <span>🎚</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)" style="flex-grow: 1; accent-color: var(--accent-color);">
+    </div>
+</div>
+
+<script src="music.js"></script>
+<script src="spores.js"></script>
+
+
+</body>
+</html>
