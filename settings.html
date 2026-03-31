@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">IXL | Dashboard</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1">
+    
+    <script>
+    // THEME ENGINE & PERSISTENT CLOAK
+    const themes = {
+        ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
+        forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
+        sunset:   { '--bg-color': '#451a03', '--nav-color': '#78350f', '--accent-color': '#fbbf24' },
+        midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
+        cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
+        electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
+        seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
+    };
+
+    function applyCloak(isCloaked) {
+        const title = document.getElementById('page-title');
+        const favicon = document.getElementById('favicon');
+        if (isCloaked === 'true') {
+            document.title = "IXL | Dashboard";
+            favicon.href = "https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1";
+        } else {
+            document.title = "Settings | Fungi";
+            favicon.href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
+        }
+    }
+
+    (function() {
+        const savedTheme = localStorage.getItem('userTheme') || 'ocean';
+        const root = document.documentElement;
+        const theme = themes[savedTheme] || themes.ocean;
+        for (let prop in theme) {
+            root.style.setProperty(prop, theme[prop]);
+        }
+        const savedCloak = localStorage.getItem('isCloaked') || 'true';
+        window.addEventListener('DOMContentLoaded', () => applyCloak(savedCloak));
+    })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-btn {
+            padding: 12px 24px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            transition: 0.2s;
+            color: white;
+        }
+        .theme-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .settings-container { padding: 50px 20px; text-align: center; color: white; font-family: 'Comic Sans MS', sans-serif;}
+        
+        .section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            display: inline-block;
+            width: 80%;
+            max-width: 500px;
+        }
+        .sporeSlider {
+            accent-color: var(--accent-color)
+        }
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="home.html" class="nav-link" title = "Brings you to the home page" alt = "home page navigation button">Home</a>
+        <a href="launcher.html" class="nav-link" title = "Brings you to the games page" alt = "games page navigation button">Games</a>
+        <a href="tools.html" class="nav-link" title = "Brings you to the tools page" alt = "tools page navigation button">Tools</a>
+        <a href="music.html" class="nav-link" title = "Brings you to the music page" alt = "music page navigation button">Music</a>
+        <a href="about.html" class="nav-link" title = "Brings you to the about page" alt = "about page navigation button">About</a>
+        <a href="settings.html" class="nav-link active" title = "Brings you to the settings page" alt = "settings page navigation button">Settings</a>
+    </div>
+</nav>
+
+<div class="settings-container">
+    <h1>Appearance Settings</h1>
+    
+    <button class="theme-btn" style="background-color: #38bdf8;" onclick="setTheme('ocean')">Ocean</button>
+    <button class="theme-btn" style="background-color: #34d399;" onclick="setTheme('forest')">Forest</button>
+    <button class="theme-btn" style="background-color: #fbbf24;" onclick="setTheme('sunset')">Sunset</button>
+    <button class="theme-btn" style="background-color: #a855f7;" onclick="setTheme('midnight')">Midnight</button>
+    <button class="theme-btn" style="background-color: #ff4b5c;" onclick="setTheme('cherry')">Cherry</button>
+    <button class="theme-btn" style="background-color: #00ff41; color: black;" onclick="setTheme('electric')">Electric</button>
+    <button class="theme-btn" style="background-color: #89E841; color: black;" onclick="setTheme('seahawks')">Seattle Seahawks</button>
+
+    <div class="section">
+        <h2>Tab Cloaking</h2>
+        <p>Changes the tab name and icon to look like school work.</p>
+        <button class="theme-btn" style="background-color: #22c55e;" onclick="toggleCloak('true')">Enable IXL Cloak</button>
+        <button class="theme-btn" style="background-color: #64748b;" onclick="toggleCloak('false')">Disable Cloak</button>
+    </div>
+
+    <!-- SPORE SLIDER SECTION -->
+    <div class="section">
+        <h2>Spore Density</h2>
+        <p>Adjust the number of spores floating in the background.</p>
+        <input type="range" id="sporeSlider" class="sporeSlider" min="0" max="500" value="50" style="width: 80%;">
+        <p>Current Count: <span id="sliderValue" style="font-weight: bold; color: var(--accent-color);">50</span></p>
+    </div>
+
+    <div class="section">
+        <h2>Data Management</h2>
+        <button class="theme-btn" style="background-color: #ef4444;" onclick="clearVault()">Relock Secret Vault</button>
+        <button class="theme-btn" style="background-color: #f97316;" onclick="resetMusicData()">Reset Music Player</button>
+    </div>
+
+    <br><br>
+    <button class="theme-btn" style="background-color: #ef4444; width: 80%; max-width: 400px;" onclick="ghostMode()">
+        Launch Ghost Mode (about:blank)
+    </button>
+</div>
+
+<script>
+    // 1. SETTINGS & UTILITY FUNCTIONS
+    function setTheme(name) {
+        localStorage.setItem('userTheme', name);
+        const root = document.documentElement;
+        const theme = themes[name] || themes.ocean;
+        for (let prop in theme) { root.style.setProperty(prop, theme[prop]); }
+    }
+
+    function toggleCloak(status) {
+        localStorage.setItem('isCloaked', status);
+        applyCloak(status);
+    }
+
+    function clearVault() { 
+        localStorage.removeItem('vaultUnlocked'); 
+        alert("Vault Locked!"); 
+        location.reload(); 
+    }
+
+    function resetMusicData() { 
+        localStorage.removeItem('currentTrack'); 
+        localStorage.removeItem('isPlaying'); 
+        alert("Music reset!"); 
+        location.reload(); 
+    }
+
+    function ghostMode() {
+        const win = window.open();
+        if (!win) return alert("Please allow popups!");
+        const iframe = win.document.createElement('iframe');
+        iframe.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; border:none; margin:0; padding:0;";
+        iframe.src = window.location.href;
+        win.document.body.style.margin = "0";
+        win.document.body.appendChild(iframe);
+        win.document.title = "IXL | Dashboard";
+    }
+
+    // 2. SPORE SLIDER LOGIC
+    window.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('sporeSlider');
+        const display = document.getElementById('sliderValue');
+        
+        // Sync with local storage on load
+        const savedCount = localStorage.getItem('sporeCount') || 50;
+        slider.value = savedCount;
+        display.textContent = savedCount;
+        window.sporeNum = parseInt(savedCount);
+
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            display.textContent = val;
+            localStorage.setItem('sporeCount', val);
+            window.sporeNum = parseInt(val);
+            
+            // Send live update to spores.js
+            window.dispatchEvent(new CustomEvent('updateSpores', { detail: val }));
+        });
+    });
+</script>
+
+<script src="music.js"></script>
+<script src="spores.js"></script>
+</body>
+</html>
