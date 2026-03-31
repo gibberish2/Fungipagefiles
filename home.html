@@ -172,7 +172,7 @@ body.popup-open > nav {
     visibility: hidden;
     transition: opacity 0.25s ease;
 
-    z-index: 0;
+    z-index: 50;
 }
 
 /* popup */
@@ -251,88 +251,7 @@ button {
 <p style="font-style: italic;">"It spreads" - Random biologist</p>
 <span id="rndmText"></span>
     <script>
-        changeText();
-    </script>
-
-
-
-    <button onclick="openPopup()" class="theme-btn">Changelog</button>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="updateDiv" id="updateBox">
-    <h2>Version 1.0</h2>
-    <p>This popup resizes, blurs the background, and closes smoothly.</p>
-<button onclick="window.open('changelog.txt', '_blank')" class="theme-btn" style="font-family: 'Comic Sans MS', 'Comic Sans', cursive;">
-    Changelog🖋
-</button>
-
-    <button class="theme-btn" id="closeBtn">Close</button>
-</div>
-<script>
-const overlay = document.getElementById("overlay");
-const updateBox = document.getElementById("updateBox");
-const closeBtn = document.getElementById("closeBtn");
-
-function openPopup() {
-    document.body.classList.add("popup-open");
-    overlay.classList.add("active");
-    updateBox.classList.add("active");
-}
-
-function closePopup() {
-    overlay.classList.remove("active");
-    updateBox.classList.remove("active");
-    document.body.classList.remove("popup-open");
-}
-
-overlay.addEventListener("click", closePopup);
-closeBtn.addEventListener("click", closePopup);
-
-
-openPopup();
-</script>
-
-
-<img id="btnImage" src="" style="display:none; width: 200px; margin-top: 10px;">
-
-
-
-<!-- GLOBAL MUSIC POPUP -->
-<div id="music-popup" class="popup-player">
-    <div class="resizer t"></div><div class="resizer b"></div>
-    <div class="resizer l"></div><div class="resizer r"></div>
-    <div class="resizer tl"></div><div class="resizer tr"></div>
-    <div class="resizer bl"></div><div class="resizer br"></div>
-
-    <div class="popup-header" style="cursor: move;">
-        <span id="popup-title">Nothing Playing</span>
-        <button onclick="togglePopup(false)" style="background:#DE3412; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">×</button>
-    </div>
-    
-    <div class="popup-controls">
-        <button onclick="skip(-10)" class="ctrl-btn">«</button>
-        <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
-        <button onclick="skip(10)" class="ctrl-btn">»</button>
-    </div>
-
-    <!-- Fix: forced overflow-x hidden and enabled y-axis scrollbar -->
-    <div id="playlist" style="margin-top:10px; max-height: 50vh; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; width: 100%; box-sizing: border-box;"></div>
-
-    <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; width: 100%;">
-        <span>🎚</span>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)" style="flex-grow: 1; accent-color: var(--accent-color);">
-    </div>
-</div>
-
-
-
-
-
-
-<script>
-    // --- ORIGINAL HOME LOGIC ---
+            // --- ORIGINAL HOME LOGIC ---
     let batteryPlaceholder = "unknown";
     if ('getBattery' in navigator) {
         navigator.getBattery().then(function(battery) {
@@ -424,7 +343,87 @@ function changeText() {
 
 
 
+        changeText();
+    </script>
+
+
+
+    <button onclick="openPopup()" class="theme-btn">Changelog</button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="updateDiv" id="updateBox">
+    <h2>Version 1.0</h2>
+    <p>This popup resizes, blurs the background, and closes smoothly.</p>
+<button onclick="window.open('changelog.txt', '_blank')" class="theme-btn" style="font-family: 'Comic Sans MS', 'Comic Sans', cursive;">
+    Changelog🖋
+</button>
+
+    <button class="theme-btn" id="closeBtn">Close</button>
+</div>
+<script>
+const overlay = document.getElementById("overlay");
+const updateBox = document.getElementById("updateBox");
+const closeBtn = document.getElementById("closeBtn");
+
+function openPopup() {
+    document.body.classList.add("popup-open");
+    overlay.classList.add("active");
+    updateBox.classList.add("active");
+}
+
+function closePopup() {
+    overlay.classList.remove("active");
+    updateBox.classList.remove("active");
+    document.body.classList.remove("popup-open");
+}
+
+overlay.addEventListener("click", closePopup);
+closeBtn.addEventListener("click", closePopup);
+
+
+openPopup();
 </script>
+
+
+<img id="btnImage" src="" style="display:none; width: 200px; margin-top: 10px;">
+
+
+
+<!-- GLOBAL MUSIC POPUP -->
+<div id="music-popup" class="popup-player">
+    <div class="resizer t"></div><div class="resizer b"></div>
+    <div class="resizer l"></div><div class="resizer r"></div>
+    <div class="resizer tl"></div><div class="resizer tr"></div>
+    <div class="resizer bl"></div><div class="resizer br"></div>
+
+    <div class="popup-header" style="cursor: move;">
+        <span id="popup-title">Nothing Playing</span>
+        <button onclick="togglePopup(false)" style="background:#DE3412; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">×</button>
+    </div>
+    
+    <div class="popup-controls">
+        <button onclick="skip(-10)" class="ctrl-btn">«</button>
+        <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
+        <button onclick="skip(10)" class="ctrl-btn">»</button>
+    </div>
+
+    <!-- Fix: forced overflow-x hidden and enabled y-axis scrollbar -->
+    <div id="playlist" style="margin-top:10px; max-height: 50vh; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; width: 100%; box-sizing: border-box;"></div>
+
+    <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; width: 100%;">
+        <span>🎚</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)" style="flex-grow: 1; accent-color: var(--accent-color);">
+    </div>
+</div>
+
+
+
+
+
+
+
 <script src="music.js"></script>
 <script src="spores.js"></script>
 </body>
