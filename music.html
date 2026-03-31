@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">IXL | Dashboard</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251">
+    <script>
+    (function() {
+        const themes = {
+            ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
+            forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
+            sunset:   { '--bg-color': '#451a03', '--nav-color': '#78350f', '--accent-color': '#fbbf24' },
+            midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
+            cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
+            electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
+            seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
+        };
+        const saved = localStorage.getItem('userTheme') || 'ocean';
+        const root = document.documentElement;
+        const theme = themes[saved] || themes.ocean;
+        for (let prop in theme) { root.style.setProperty(prop, theme[prop]); }
+
+        const isCloaked = localStorage.getItem('isCloaked');
+        if (isCloaked === 'true') {
+            document.title = "IXL | Dashboard";
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('favicon').href = "https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251";
+            });
+        } else {
+            document.title = "Music | Fungi";
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('favicon').href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
+            });
+        }
+    })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            margin: 0;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive; !important
+            transition: background-color 0.3s ease;
+        }
+        .content {
+            text-align: center;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .glow-text {
+            color: #fff;
+            text-shadow: 0 0 7px var(--accent-color), 0 0 10px var(--accent-color), 0 0 21px var(--accent-color);
+            animation: pulse-glow 2s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); }
+            to { text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
+        }
+        .image-container {
+            background-color: rgba(128, 128, 128, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            display: inline-block;
+            margin-bottom: 30px;
+            border: 2px solid var(--accent-color);
+        }
+
+        /* Matches the Game Launcher Grid Size */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            width: 90%;
+            max-width: 1000px;
+            margin-bottom: 50px;
+        }
+
+        /* Specific Hover for Music Page */
+        .music-card:hover {
+            transform: scale(1.05); /* Grows like game buttons */
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+        
+        .music-card:active {
+            transform: scale(0.98); /* Shrinks slightly on click */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="home.html" class="nav-link" title = "Brings you to the home page" alt = "home page navigation button">Home</a>
+        <a href="launcher.html" class="nav-link" title = "Brings you to the games page" alt = "games page navigation button">Games</a>
+        <a href="tools.html" class="nav-link" title = "Brings you to the tools page" alt = "tools page navigation button">Tools</a>
+        <a href="music.html" class="nav-link active" title = "Brings you to the music page" alt = "music page navigation button">Music</a>
+        <a href="about.html" class="nav-link" title = "Brings you to the about page" alt = "about page navigation button">About</a>
+        <a href="settings.html" class="nav-link" title = "Brings you to the settings page" alt = "settings page navigation button">Settings</a>
+    </div>
+</nav>
+<div class="content">
+    <h1 class="glow-text">Fungi Jams</h1>
+    <div class="image-container">
+        <div id="now-playing">Select a song</div>
+    </div>
+    <div id="main-playlist" class="button-grid"></div> 
+    <!-- Container updated to match Launcher Grid exactly -->
+
+        <!-- Buttons will be injected here -->
+        
+    </div>
+</div>
+
+<!-- GLOBAL MUSIC POPUP -->
+<div id="music-popup" class="popup-player">
+    <div class="resizer t"></div><div class="resizer b"></div>
+    <div class="resizer l"></div><div class="resizer r"></div>
+    <div class="resizer tl"></div><div class="resizer tr"></div>
+    <div class="resizer bl"></div><div class="resizer br"></div>
+
+    <div class="popup-header" style="cursor: move;">
+        <span id="popup-title">Nothing Playing</span>
+        <button onclick="togglePopup(false)" style="background:#DE3412; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">×</button>
+    </div>
+    
+    <div class="popup-controls">
+        <button onclick="skip(-10)" class="ctrl-btn">«</button>
+        <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
+        <button onclick="skip(10)" class="ctrl-btn">»</button>
+    </div>
+
+    <!-- Fix: forced overflow-x hidden and enabled y-axis scrollbar -->
+    <div id="playlist" style="margin-top:10px; max-height: 50vh; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; width: 100%; box-sizing: border-box;"></div>
+
+    <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; width: 100%;">
+        <span>🎚</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)" style="flex-grow: 1; accent-color: var(--accent-color);">
+    </div>
+</div>
+
+<script src="music.js"></script>
+<script src="spores.js"></script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const mainGrid = document.getElementById('main-playlist');
+    if (mainGrid && typeof songList !== 'undefined') {
+        songList.forEach(song => {
+            const btn = document.createElement('button');
+            btn.className = "music-card"; 
+            // Only set the background image here; let CSS handle the size/shape
+            btn.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${song.image}')`;
+            btn.innerHTML = song.title;
+            btn.onclick = () => playSong(song.title, song.url);
+            mainGrid.appendChild(btn);
+        });
+    }
+});
+
+</script>
+
+</body>
+</html>
