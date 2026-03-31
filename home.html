@@ -249,6 +249,11 @@ button {
     </div>
 <h1 class="glow-text oi-title" style="margin-top: 0;">F U N G I</h1>
 <p style="font-style: italic;">"It spreads" - Random biologist</p>
+<span id="rndmText"></span>
+    <script>
+        changeText();
+    </script>
+
 
 
     <button onclick="openPopup()" class="theme-btn">Changelog</button>
@@ -291,11 +296,8 @@ openPopup();
 
 
 <img id="btnImage" src="" style="display:none; width: 200px; margin-top: 10px;">
-    <button id="sentenceBtn" class="theme-btn" onclick="changeText()">
-        <span id="btnText">~𝖂𝖔𝖗𝖉𝖘 𝖔𝖋 𝖜𝖎𝖘𝖉𝖔𝖒~</span>
-    </button>
 
-</div>
+
 
 <!-- GLOBAL MUSIC POPUP -->
 <div id="music-popup" class="popup-player">
@@ -389,10 +391,10 @@ const content = [
 ];
 
 function changeText() {
-    const btnText = document.getElementById('btnText');
-    const btnImg = document.getElementById('btnImage'); // Ensure you have <img id="btnImage"> in HTML
+    const rndmText = document.getElementById('rndmText');
+    const rndmImg = document.getElementById('rndmImage'); // Ensure you have <img id="rndmImage"> in HTML
     
-    btnText.classList.add('text-hidden');
+    rndmText.classList.add('text-hidden');
 
     setTimeout(() => {
         // Pick a random object from the list
@@ -405,18 +407,18 @@ function changeText() {
         }
         
         // Update Text
-        btnText.innerText = displayText;
+        rndmText.innerText = displayText;
 
         // Optional Image Logic
         if (choice.url) {
-            btnImg.src = choice.url;
-            btnImg.style.display = "block"; // Show image if URL exists
+            rndmImg.src = choice.url;
+            rndmImg.style.display = "block"; // Show image if URL exists
         } else {
-            btnImg.style.display = "none";  // Hide image if URL is null/empty
+            rndmImg.style.display = "none";  // Hide image if URL is null/empty
         }
 
-        void btnText.offsetWidth; 
-        btnText.classList.remove('text-hidden');
+        void rndmText.offsetWidth; 
+        rndmText.classList.remove('text-hidden');
     }, 200);
 }
 
