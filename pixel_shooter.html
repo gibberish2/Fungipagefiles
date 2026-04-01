@@ -2,25 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title id="page-title">IXL | Dashobard</title>
-        <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1">
+    <title id="page-title">Pixel Shooter | Fungi</title>
+        <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd">
     
-    <script>
-    (function() {
-        const isCloaked = localStorage.getItem('isCloaked');
-        if (isCloaked === 'true') {
-            document.title = "IXL | Dashboard";
-            document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('favicon').href = "https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1";
-            });
-        } else {
-            document.title = "Pixel Shooter | Fungi";
-            document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('favicon').href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
-            });
-        }
-    })();
-    </script>
+
+<script> 
+    setTheme('ocean') // runs BEFORE theme.js loads 
+</script>
+<script src="theme.js"></script>
 
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
