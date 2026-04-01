@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>IXL | Skill plans</title>
-    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1">
+    <title>Burrito Bison | Fungi</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd">
 
     <script>
         (function() {
@@ -14,7 +14,7 @@
                 midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
                 cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
                 electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
-                seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
+                noir:     { '--bg-color': '#0b0b0c', '--nav-color': '#1a1a1d', '--accent-color': '#ffffff' }
             };
 
             // Apply Theme
@@ -25,22 +25,13 @@
                 root.style.setProperty(prop, theme[prop]); 
             }
 
-            // Cloak Logic
-            const isCloaked = localStorage.getItem('isCloaked');
-            if (isCloaked === 'true') {
-                document.title = "IXL | Dashboard";
-            } else {
-                document.title = "Burrito Bison | Fungi";
-            }
+            document.title = "Burrito Bison | Fungi";
         })();
 
         document.addEventListener('DOMContentLoaded', () => {
-            const isCloaked = localStorage.getItem('isCloaked');
             const favicon = document.getElementById('favicon');
             if (favicon) {
-                favicon.href = isCloaked === 'true' 
-                    ? "https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1" 
-                    : "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
+                favicon.href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
             }
         });
     </script>
