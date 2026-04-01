@@ -6,7 +6,7 @@
                 midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
                 cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
                 electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
-                noir:     { '--bg-color': '#0b0b0c', '--nav-color': '#1a1a1d', '--accent-color': '#ffffff' }
+                noir:     { '--bg-color': '#0b0b0c', '--nav-color': '#1a1a1d', '--accent-color': '#7D7D7D' }
             };
         const saved = localStorage.getItem('userTheme') || 'ocean';
         const root = document.documentElement;
