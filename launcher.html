@@ -3,43 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">IXL | Dashboard</title>
-    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251">
+    <title id="page-title">Launcher | Fungi</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd">
     
-    <script>
-    // ANTI-FLICKER + FULL THEME SYNC + CLOAK
-    (function() {
-        const themes = {
-            ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
-            forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
-            sunset:   { '--bg-color': '#451a03', '--nav-color': '#78350f', '--accent-color': '#fbbf24' },
-            midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
-            cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
-            electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
-            seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
-        };
-        const savedTheme = localStorage.getItem('userTheme') || 'ocean';
-        const root = document.documentElement;
-        const theme = themes[savedTheme] || themes.ocean;
-        
-        for (let prop in theme) {
-            root.style.setProperty(prop, theme[prop]);
-        }
+<script> 
+    setTheme('ocean') // runs BEFORE theme.js loads 
+</script>
+<script src="theme.js"></script>
 
-        const isCloaked = localStorage.getItem('isCloaked');
-        if (isCloaked === 'true') {
-            document.title = "IXL | Dashboard";
-            document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('favicon').href = "https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251";
-            });
-        } else {
-            document.title = "Games | Fungi";
-            document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('favicon').href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
-            });
-        }
-    })();
-    </script>
 
     <link rel="stylesheet" href="style.css">
 
