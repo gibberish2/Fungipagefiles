@@ -39,7 +39,7 @@ body {
 .nav-link {
     text-decoration: none; 
     color: var(--text-color);
-    padding: 5px 15px; 
+    padding: 10px 12.5px; 
     font-weight: bold; 
     transition: 0.35s;
     border-radius: 6px;
