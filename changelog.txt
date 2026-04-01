@@ -12,3 +12,4 @@ Version 1.0.1!
 -Made it SOOO much easier to add different themes, and to change themes🖌
 -Added the Noir theme🎩
 -Fully deleted the IXL cloaking!💥
+-Added a new "tool" (you could say), in the tools part of the website! 
