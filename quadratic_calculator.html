@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Tools | Fungi</title>
+    <title>Quadratic Calculator | Fungi</title>
     <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251">
-    
     <script>
     (function() {
         const themes = {
@@ -15,27 +14,15 @@
             midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
             cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
             electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
-            seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
-            
+            noir: { '--bg-color': '#0b0b0c', '--nav-color': '#1a1a1d', '--accent-color': '#d4af37' }
         };
         const saved = localStorage.getItem('userTheme') || 'ocean';
         const root = document.documentElement;
         const theme = themes[saved] || themes.ocean;
         for (let prop in theme) { root.style.setProperty(prop, theme[prop]); }
 
-        const isCloaked = localStorage.getItem('isCloaked');
-        document.addEventListener('DOMContentLoaded', () => {
-            const titleEl = document.getElementById('pageTitle');
-            const faviconEl = document.getElementById('favicon');
-            if (isCloaked === 'true') {
-                titleEl.innerText = "IXL | Quadratic Equations";
-                faviconEl.href = "https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251";
-            }else{
-                titleEl.innerText = "Quadratic Calculator | Fungi";
-                faviconEl.href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
-            }
-        });
-    })();
+
+    
     </script>
 
     <link rel="stylesheet" href="style.css">
