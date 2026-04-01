@@ -28,7 +28,7 @@ body {
     background-color: color-mix(in srgb, var(--nav-color), transparent 20%);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    height: 12vh; 
+    height: 10vh; 
     z-index: 1000;
     display: flex; 
     justify-content: center; 
@@ -39,7 +39,7 @@ body {
 .nav-link {
     text-decoration: none; 
     color: var(--text-color);
-    padding: 10px 20px; 
+    padding: 5px 15px; 
     font-weight: bold; 
     transition: 0.35s;
     border-radius: 6px;
