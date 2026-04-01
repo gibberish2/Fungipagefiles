@@ -3,43 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">IXL | Dashboard</title>
-    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1">
-    
+    <title>Home | Fungi</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/e80de4dd5e7e702da78e6a41d58a0251">
     <script>
-    // THEME ENGINE & PERSISTENT CLOAK
-    const themes = {
-        ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
-        forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
-        sunset:   { '--bg-color': '#451a03', '--nav-color': '#78350f', '--accent-color': '#fbbf24' },
-        midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
-        cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
-        electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
-        seahawks: { '--bg-color': '#69BE28', '--nav-color': '#667D7D', '--accent-color': '#00428A' }
-    };
-
-    function applyCloak(isCloaked) {
-        const title = document.getElementById('page-title');
-        const favicon = document.getElementById('favicon');
-        if (isCloaked === 'true') {
-            document.title = "IXL | Dashboard";
-            favicon.href = "https://codehs.com/uploads/b9709218b992bb723f9a5aa69426b5f1";
-        } else {
-            document.title = "Settings | Fungi";
-            favicon.href = "https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd";
-        }
-    }
-
     (function() {
-        const savedTheme = localStorage.getItem('userTheme') || 'ocean';
+        const themes = {
+            ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
+            forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
+            sunset:   { '--bg-color': '#451a03', '--nav-color': '#78350f', '--accent-color': '#fbbf24' },
+            midnight: { '--bg-color': '#000000', '--nav-color': '#111111', '--accent-color': '#a855f7' },
+            cherry:   { '--bg-color': '#2d0a0e', '--nav-color': '#4a0e16', '--accent-color': '#ff4b5c' },
+            electric: { '--bg-color': '#0a0a0a', '--nav-color': '#343D34', '--accent-color': '#00ff41' },
+            noir: { '--bg-color': '#0b0b0c', '--nav-color': '#1a1a1d', '--accent-color': '#d4af37' }
+        };
+        const saved = localStorage.getItem('userTheme') || 'ocean';
         const root = document.documentElement;
-        const theme = themes[savedTheme] || themes.ocean;
-        for (let prop in theme) {
-            root.style.setProperty(prop, theme[prop]);
-        }
-        const savedCloak = localStorage.getItem('isCloaked') || 'true';
-        window.addEventListener('DOMContentLoaded', () => applyCloak(savedCloak));
-    })();
+        const theme = themes[saved] || themes.ocean;
+        for (let prop in theme) { root.style.setProperty(prop, theme[prop]); }
+
+
+    
     </script>
 
     <link rel="stylesheet" href="style.css">
@@ -95,14 +78,9 @@
     <button class="theme-btn" style="background-color: #a855f7;" onclick="setTheme('midnight')">Midnight</button>
     <button class="theme-btn" style="background-color: #ff4b5c;" onclick="setTheme('cherry')">Cherry</button>
     <button class="theme-btn" style="background-color: #00ff41; color: black;" onclick="setTheme('electric')">Electric</button>
-    <button class="theme-btn" style="background-color: #89E841; color: black;" onclick="setTheme('seahawks')">Seattle Seahawks</button>
+    <button class="theme-btn" style="background-color: #292929; color: white;" onclick="setTheme('noir')">Noir</button>
 
-    <div class="section">
-        <h2>Tab Cloaking</h2>
-        <p>Changes the tab name and icon to look like school work.</p>
-        <button class="theme-btn" style="background-color: #22c55e;" onclick="toggleCloak('true')">Enable IXL Cloak</button>
-        <button class="theme-btn" style="background-color: #64748b;" onclick="toggleCloak('false')">Disable Cloak</button>
-    </div>
+
 
     <!-- SPORE SLIDER SECTION -->
     <div class="section">
@@ -120,7 +98,7 @@
 
     <br><br>
     <button class="theme-btn" style="background-color: #ef4444; width: 80%; max-width: 400px;" onclick="ghostMode()">
-        Launch Ghost Mode (about:blank)
+        Launch about:blank
     </button>
 </div>
 
@@ -133,10 +111,7 @@
         for (let prop in theme) { root.style.setProperty(prop, theme[prop]); }
     }
 
-    function toggleCloak(status) {
-        localStorage.setItem('isCloaked', status);
-        applyCloak(status);
-    }
+
 
     function clearVault() { 
         localStorage.removeItem('vaultUnlocked'); 
