@@ -1,5 +1,4 @@
-        (function() {
-            // Theme Definitions
+
             const themes = {
                 ocean:    { '--bg-color': '#0f172a', '--nav-color': '#1e293b', '--accent-color': '#38bdf8' },
                 forest:   { '--bg-color': '#064e3b', '--nav-color': '#065f46', '--accent-color': '#34d399' },
