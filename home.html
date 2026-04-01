@@ -210,7 +210,11 @@ button {
     cursor: pointer;
 }
 
-
+#rndmText {
+    color: white;
+    display: block;
+    margin-top: 10px;
+}
 
     </style>
     <!--The Oi font import from google fonts (w service btw 5 out of 5 stars)-->
@@ -296,7 +300,7 @@ const content = [
     { text: "I got this... FAAAHHHH👻", url: null },
     { text: "SHUT UP... MOM! SILENCE FROM YOU, YOU'RE CUT OFF, from TALKING🤐🤫", url: null },
 ];
-
+<img id="rndmImage" style="display:none; width: 200px; margin-top: 10px;">
 function changeText() {
     const rndmText = document.getElementById('rndmText');
     const rndmImg = document.getElementById('rndmImage'); // Ensure you have <img id="rndmImage"> in HTML
