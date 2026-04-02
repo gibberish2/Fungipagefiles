@@ -38,7 +38,7 @@ async function searchYouTube() {
     const query = document.getElementById("search-input").value;
     if (!query) return;
 
-    const API_KEY = "YOUR_API_KEY"; // <-- REQUIRED
+    const API_KEY = "AIzaSyDB3ijq7TdKKElkH16woL4htaUCCHVVCB4"; // <-- REQUIRED
 
     try {
         const res = await fetch(
