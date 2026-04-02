@@ -3,6 +3,9 @@ let queue = [];
 let currentIndex = 0;
 let playerReady = false;
 
+/* -----------------------------
+   YOUTUBE PLAYER INIT
+----------------------------- */
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('ytplayer', {
         height: '1',
@@ -29,32 +32,40 @@ function onStateChange(e) {
 }
 
 /* -----------------------------
-   SEARCH YOUTUBE (REAL RESULTS)
+   SEARCH YOUTUBE (REAL API)
 ----------------------------- */
 async function searchYouTube() {
     const query = document.getElementById("search-input").value;
     if (!query) return;
 
-    // NOTE: Replace API_KEY with your own if you want real results
-    const API_KEY = "YOUR_API_KEY";
+    const API_KEY = "YOUR_API_KEY"; // <-- REQUIRED
 
-    const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
-    );
+    try {
+        const res = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
+        );
 
-    const data = await res.json();
+        const data = await res.json();
 
-    queue = data.items.map(item => ({
-        id: item.id.videoId,
-        title: item.snippet.title,
-        image: item.snippet.thumbnails.medium.url
-    }));
+        queue = data.items.map(item => ({
+            id: item.id.videoId,
+            title: item.snippet.title,
+            image: item.snippet.thumbnails.medium.url
+        }));
 
-    currentIndex = 0;
-    renderQueue();
-    togglePopup(true);
+        currentIndex = 0;
+        renderQueue();
 
-    if (queue.length > 0) playFromQueue();
+        togglePopup(true);
+
+        if (queue.length > 0) {
+            playFromQueue();
+        }
+
+    } catch (err) {
+        console.error("Search failed:", err);
+        alert("YouTube search failed. Check API key.");
+    }
 }
 
 /* -----------------------------
