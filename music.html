@@ -75,7 +75,7 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 300px;
+    width: 320px;
     background: #111;
     border: 2px solid var(--accent-color);
     border-radius: 10px;
@@ -90,6 +90,19 @@ body {
     align-items: center;
 }
 
+.popup-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popup-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
 .popup-controls {
     display: flex;
     justify-content: center;
@@ -99,7 +112,7 @@ body {
 
 #playlist {
     margin-top: 10px;
-    max-height: 200px;
+    max-height: 150px;
     overflow-y: auto;
 }
 
@@ -111,6 +124,14 @@ body {
 
 .track:hover {
     background: #222;
+}
+
+.search-box {
+    margin-top: 10px;
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
 }
 
 /* Hidden YouTube player */
@@ -149,10 +170,17 @@ body {
 
 <!-- POPUP -->
 <div id="music-popup" class="popup-player">
+
     <div class="popup-header">
-        <span id="popup-title">Nothing Playing</span>
+        <div class="popup-header-left">
+            <img id="popup-thumb" class="popup-thumb" src="">
+            <span id="popup-title">Nothing Playing</span>
+        </div>
         <button onclick="togglePopup(false)">×</button>
     </div>
+
+    <!-- SEARCH -->
+    <input id="search-input" class="search-box" placeholder="Search songs..." oninput="filterSongs()">
 
     <div class="popup-controls">
         <button onclick="skip(-10)">«</button>
@@ -203,10 +231,10 @@ function onStateChange(e) {
     }
 }
 
-function playSong(title, url) {
+function playSong(title, url, image) {
     let id = extractYouTubeID(url);
 
-    queue.push({ id, title });
+    queue.push({ id, title, image });
 
     if (queue.length === 1) {
         currentIndex = 0;
@@ -223,6 +251,7 @@ function playFromQueue() {
 
     document.getElementById("now-playing").textContent = item.title;
     document.getElementById("popup-title").textContent = item.title;
+    document.getElementById("popup-thumb").src = item.image;
 
     player.loadVideoById(item.id);
 
@@ -277,6 +306,28 @@ function renderQueue() {
         el.appendChild(div);
     });
 }
+
+/* SEARCH FUNCTION */
+function filterSongs() {
+    const query = document.getElementById("search-input").value.toLowerCase();
+    const el = document.getElementById("playlist");
+    el.innerHTML = "";
+
+    queue
+        .filter(song => song.title.toLowerCase().includes(query))
+        .forEach((song, i) => {
+            let div = document.createElement("div");
+            div.className = "track";
+            div.textContent = song.title;
+
+            div.onclick = () => {
+                currentIndex = queue.indexOf(song);
+                playFromQueue();
+            };
+
+            el.appendChild(div);
+        });
+}
 </script>
 
 <script src="music.js"></script>
@@ -294,7 +345,7 @@ window.addEventListener('DOMContentLoaded', () => {
             btn.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${song.image}')`;
             btn.innerHTML = song.title;
 
-            btn.onclick = () => playSong(song.title, song.url);
+            btn.onclick = () => playSong(song.title, song.url, song.image);
 
             mainGrid.appendChild(btn);
         });
