@@ -39,34 +39,33 @@ function onStateChange(e) {
 ----------------------------- */
 async function searchYouTube() {
     const query = document.getElementById("search-input").value;
-    if (!query) return alert("Type something to search!");
+    if (!query) return;
 
-    const API_KEY = "AIzaSyDB3ijq7TdKKElkH16woL4htaUCCHVVCB4"; // REQUIRED
+    const API_KEY = "AIzaSyDB3ijq7TdKKElkH16woL4htaUCCHVVCB4";
 
-    try {
-        const res = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
-        );
+    const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
+    );
 
-        const data = await res.json();
+    const data = await res.json();
 
-        queue = data.items.map(item => ({
-            id: item.id.videoId,
-            title: item.snippet.title,
-            image: item.snippet.thumbnails.medium.url
-        }));
+    if (!data.items) {
+        console.error("API Error:", data);
+        alert("Search failed (check API key or quota)");
+        return;
+    }
 
-        currentIndex = 0;
-        renderQueue();
-        togglePopup(true);
+    queue = data.items.map(item => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        image: item.snippet.thumbnails.medium.url
+    }));
 
-        if (queue.length > 0) {
-            playFromQueue();
-        }
+    currentIndex = 0;
+    renderQueue();
 
-    } catch (err) {
-        console.error(err);
-        alert("Search failed. Check API key.");
+    if (queue.length > 0) {
+        playFromQueue();
     }
 }
 
@@ -117,15 +116,18 @@ function togglePopup(show) {
 ----------------------------- */
 function renderQueue() {
     const el = document.getElementById("playlist");
-    if (!el) return;
-
     el.innerHTML = "";
 
     queue.forEach((song, i) => {
         const div = document.createElement("div");
         div.className = "track";
 
-        div.innerHTML = (i === currentIndex ? "▶ " : "") + song.title;
+        div.innerHTML = `
+            <img src="${song.image}" class="track-thumb" />
+            <div class="track-info">
+                <div class="track-title">${song.title}</div>
+            </div>
+        `;
 
         div.onclick = () => {
             currentIndex = i;
