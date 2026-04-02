@@ -3,10 +3,17 @@ let queue = [];
 let currentIndex = 0;
 let playerReady = false;
 
+let player;
+let queue = [];
+let currentIndex = 0;
+let playerReady = false;
+
 /* -----------------------------
    INIT YOUTUBE PLAYER
 ----------------------------- */
 function onYouTubeIframeAPIReady() {
+    console.log("YT API Loaded");
+
     player = new YT.Player('ytplayer', {
         height: '1',
         width: '1',
@@ -43,29 +50,37 @@ async function searchYouTube() {
 
     const API_KEY = "AIzaSyDB3ijq7TdKKElkH16woL4htaUCCHVVCB4";
 
-    const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
-    );
+    try {
+        const res = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
+        );
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (!data.items) {
-        console.error("API Error:", data);
-        alert("Search failed (check API key or quota)");
-        return;
-    }
+        console.log("API RESPONSE:", data);
 
-    queue = data.items.map(item => ({
-        id: item.id.videoId,
-        title: item.snippet.title,
-        image: item.snippet.thumbnails.medium.url
-    }));
+        if (!data.items) {
+            console.error("API Error:", data);
+            alert("Search failed (check API key or quota)");
+            return;
+        }
 
-    currentIndex = 0;
-    renderQueue();
+        queue = data.items.map(item => ({
+            id: item.id.videoId,
+            title: item.snippet.title,
+            image: item.snippet.thumbnails.medium.url
+        }));
 
-    if (queue.length > 0) {
-        playFromQueue();
+        currentIndex = 0;
+        renderQueue();
+
+        // Don’t auto-play if player isn’t ready yet
+        if (playerReady && queue.length > 0) {
+            playFromQueue();
+        }
+
+    } catch (err) {
+        console.error("Fetch error:", err);
     }
 }
 
@@ -76,16 +91,27 @@ function playFromQueue() {
     const item = queue[currentIndex];
     if (!item) return;
 
-    if (!player || !playerReady) {
+    if (!player) {
+        console.warn("Player not initialized yet");
+        return;
+    }
+
+    if (!playerReady) {
         console.warn("Player not ready, retrying...");
         setTimeout(playFromQueue, 500);
         return;
     }
 
+    console.log("Playing:", item.id);
+
     document.getElementById("now-playing").textContent = item.title;
 
-    player.loadVideoById(item.id);
-    player.playVideo();
+    try {
+        player.loadVideoById(item.id);
+        player.playVideo();
+    } catch (err) {
+        console.error("Playback error:", err);
+    }
 }
 
 function skip(seconds) {
@@ -97,10 +123,6 @@ function skip(seconds) {
 function adjustVolume(v) {
     if (!player) return;
     player.setVolume(v * 100);
-}
-
-function togglePopup(show) {
-    document.getElementById("music-popup").style.display = show ? "block" : "none";
 }
 
 /* -----------------------------
@@ -121,10 +143,10 @@ function renderQueue() {
             </div>
         `;
 
-        div.onclick = () => {
+        div.addEventListener("click", () => {
             currentIndex = i;
             playFromQueue();
-        };
+        });
 
         el.appendChild(div);
     });
