@@ -41,8 +41,8 @@ function onStateChange(e) {
 /* -----------------------------
    SEARCH YOUTUBE
 ----------------------------- */
-async function searchYouTube() {
-    const query = document.getElementById("search-input").value;
+window.searchYouTube = async function () {
+   const query = document.getElementById("search-input").value;
     if (!query) return;
 
     const API_KEY = "AIzaSyDB3ijq7TdKKElkH16woL4htaUCCHVVCB4";
