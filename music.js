@@ -1,7 +1,4 @@
-let player;
-let queue = [];
-let currentIndex = 0;
-let playerReady = false;
+
 
 let player;
 let queue = [];
