@@ -131,6 +131,49 @@ body {
     color: white;
     display: block;
 }
+    .track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin: 8px 0;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.track:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.02);
+}
+
+.track-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.track-title {
+    font-size: 14px;
+    color: white;
+}
+
+button {
+    background: #111;
+    border: 1px solid #444;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
 </style>
 </head>
 
