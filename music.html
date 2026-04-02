@@ -144,44 +144,28 @@ body {
         <div id="now-playing">Select a song</div>
     </div>
 
-    <div id="main-playlist" class="button-grid"></div>
-</div>
-
-
-
-<!-- POPUP -->
-<div id="music-popup" class="popup-player">
-
-    <div class="popup-header">
-        <div class="popup-header-left">
-            <img id="popup-thumb" class="popup-thumb">
-            <span id="popup-title">Nothing Playing</span>
-        </div>
-        <button onclick="togglePopup(false)">×</button>
+    <!-- SEARCH UI MOVED HERE -->
+    <div style="margin-bottom:20px; width:300px;">
+        <input id="search-input" class="search-box" placeholder="Search YouTube songs..." />
+        <button onclick="searchYouTube()" style="width:100%; margin-top:5px;">
+            Search
+        </button>
     </div>
 
-    <!-- SEARCH INPUT -->
-    <input id="search-input" class="search-box" placeholder="Search YouTube songs..." />
-
-    <button onclick="searchYouTube()" class="ctrl-btn" style="width:100%; margin-top:5px;">
-        Search
-    </button>
-<div id="ytplayer"></div>
-<script src="https://www.youtube.com/iframe_api"></script>
-    <div class="popup-controls">
+    <!-- CONTROLS -->
+    <div class="popup-controls" style="margin-bottom:20px;">
         <button onclick="skip(-10)">«</button>
         <button onclick="togglePlay()">▶</button>
         <button onclick="skip(10)">»</button>
     </div>
 
-    <!-- SEARCH RESULTS / QUEUE -->
-    <div id="playlist"></div>
-
-    <div style="margin-top:10px;">
-        <input type="range" min="0" max="1" step="0.01"
-               value="0.5" oninput="adjustVolume(this.value)">
-    </div>
+    <!-- QUEUE / RESULTS -->
+    <div id="playlist" class="button-grid"></div>
 </div>
+
+<!-- YouTube player (still required) -->
+<div id="ytplayer"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script src="music.js"></script>
 <script src="spores.js"></script>
@@ -192,5 +176,3 @@ data-cf-beacon='{"token": "2fb5e9188fd9485ca71dcc4ab49bf350"}'></script>
 
 </body>
 </html>
-
-
