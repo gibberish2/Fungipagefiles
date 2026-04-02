@@ -73,27 +73,19 @@ async function searchYouTube() {
    PLAYBACK
 ----------------------------- */
 function playFromQueue() {
-    let item = queue[currentIndex];
-    if (!item || !playerReady) return;
+    const item = queue[currentIndex];
+    if (!item) return;
 
-    document.getElementById("popup-title").textContent = item.title;
-    document.getElementById("popup-thumb").src = item.image;
+    if (!player || !playerReady) {
+        console.warn("Player not ready, retrying...");
+        setTimeout(playFromQueue, 500);
+        return;
+    }
+
     document.getElementById("now-playing").textContent = item.title;
 
     player.loadVideoById(item.id);
     player.playVideo();
-}
-
-function togglePlay() {
-    if (!player) return;
-
-    let state = player.getPlayerState();
-
-    if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-    } else {
-        player.playVideo();
-    }
 }
 
 function skip(seconds) {
