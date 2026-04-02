@@ -149,25 +149,34 @@ body {
 
 <!-- POPUP -->
 <div id="music-popup" class="popup-player">
+
     <div class="popup-header">
-        <span id="popup-title">Nothing Playing</span>
+        <div class="popup-header-left">
+            <img id="popup-thumb" class="popup-thumb">
+            <span id="popup-title">Nothing Playing</span>
+        </div>
         <button onclick="togglePopup(false)">×</button>
     </div>
 
-    <div class="popup-body">
-        <img id="popup-thumb" class="popup-thumb" />
+    <!-- SEARCH INPUT -->
+    <input id="search-input" class="search-box" placeholder="Search YouTube songs..." />
 
-        <input id="search-input" class="search-box" placeholder="Search YouTube..." />
-        <button onclick="searchYouTube()" class="ctrl-btn">Search & Play</button>
+    <button onclick="searchYouTube()" class="ctrl-btn" style="width:100%; margin-top:5px;">
+        Search
+    </button>
 
-        <div>
-            <button onclick="skip(-10)" class="ctrl-btn">«</button>
-            <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
-            <button onclick="skip(10)" class="ctrl-btn">»</button>
-        </div>
+    <div class="popup-controls">
+        <button onclick="skip(-10)">«</button>
+        <button onclick="togglePlay()">▶</button>
+        <button onclick="skip(10)">»</button>
+    </div>
 
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01"
-               oninput="adjustVolume(this.value)">
+    <!-- SEARCH RESULTS / QUEUE -->
+    <div id="playlist"></div>
+
+    <div style="margin-top:10px;">
+        <input type="range" min="0" max="1" step="0.01"
+               value="0.5" oninput="adjustVolume(this.value)">
     </div>
 </div>
 
