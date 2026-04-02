@@ -4,7 +4,7 @@ let currentIndex = 0;
 let playerReady = false;
 
 /* -----------------------------
-   YOUTUBE PLAYER INIT
+   INIT YOUTUBE PLAYER
 ----------------------------- */
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('ytplayer', {
@@ -16,7 +16,10 @@ function onYouTubeIframeAPIReady() {
             playsinline: 1
         },
         events: {
-            onReady: () => playerReady = true,
+            onReady: () => {
+                playerReady = true;
+                console.log("YouTube Player Ready");
+            },
             onStateChange: onStateChange
         }
     });
@@ -32,13 +35,13 @@ function onStateChange(e) {
 }
 
 /* -----------------------------
-   SEARCH YOUTUBE (REAL API)
+   SEARCH YOUTUBE
 ----------------------------- */
 async function searchYouTube() {
     const query = document.getElementById("search-input").value;
-    if (!query) return;
+    if (!query) return alert("Type something to search!");
 
-    const API_KEY = "AIzaSyDB3ijq7TdKKElkH16woL4htaUCCHVVCB4"; // <-- REQUIRED
+    const API_KEY = "YOUR_API_KEY"; // REQUIRED
 
     try {
         const res = await fetch(
@@ -55,7 +58,6 @@ async function searchYouTube() {
 
         currentIndex = 0;
         renderQueue();
-
         togglePopup(true);
 
         if (queue.length > 0) {
@@ -63,8 +65,8 @@ async function searchYouTube() {
         }
 
     } catch (err) {
-        console.error("Search failed:", err);
-        alert("YouTube search failed. Check API key.");
+        console.error(err);
+        alert("Search failed. Check API key.");
     }
 }
 
@@ -75,9 +77,9 @@ function playFromQueue() {
     let item = queue[currentIndex];
     if (!item || !playerReady) return;
 
-    document.getElementById("now-playing").textContent = item.title;
     document.getElementById("popup-title").textContent = item.title;
     document.getElementById("popup-thumb").src = item.image;
+    document.getElementById("now-playing").textContent = item.title;
 
     player.loadVideoById(item.id);
     player.playVideo();
@@ -111,10 +113,12 @@ function togglePopup(show) {
 }
 
 /* -----------------------------
-   QUEUE UI
+   QUEUE RENDER
 ----------------------------- */
 function renderQueue() {
     const el = document.getElementById("playlist");
+    if (!el) return;
+
     el.innerHTML = "";
 
     queue.forEach((song, i) => {
