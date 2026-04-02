@@ -15,11 +15,7 @@ body {
     background-color: var(--bg-color);
     color: white;
     margin: 0;
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
-}
-
-* {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+    font-family: 'Comic Sans MS', cursive;
 }
 
 .content {
@@ -32,107 +28,90 @@ body {
 
 .glow-text {
     color: #fff;
-    text-shadow: 0 0 7px var(--accent-color), 0 0 10px var(--accent-color), 0 0 21px var(--accent-color);
+    text-shadow: 0 0 7px var(--accent-color), 0 0 21px var(--accent-color);
 }
 
 .image-container {
-    background-color: rgba(128, 128, 128, 0.4);
+    background-color: rgba(128,128,128,0.4);
     border-radius: 15px;
     padding: 20px;
-    display: inline-block;
-    margin-bottom: 30px;
     border: 2px solid var(--accent-color);
+    margin-bottom: 20px;
 }
 
+/* GRID */
 .button-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 25px;
     width: 90%;
     max-width: 1000px;
-    margin-bottom: 50px;
 }
 
+/* SONG CARDS */
 .music-card {
+    height: 120px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-color);
+    color: white;
+    cursor: pointer;
     background-size: cover;
     background-position: center;
-    color: white;
-    padding: 40px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 12px;
-    font-size: 16px;
-    text-shadow: 0 0 5px black;
+    font-weight: bold;
+    transition: transform 0.2s ease;
 }
 
 .music-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px var(--accent-color);
 }
 
-/* Popup */
+/* POPUP UI */
 .popup-player {
     position: fixed;
     bottom: 20px;
     right: 20px;
     width: 320px;
-    background: #111;
+    background: var(--nav-color);
     border: 2px solid var(--accent-color);
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 12px;
     display: none;
-    z-index: 999;
+    padding: 10px;
+    z-index: 9999;
 }
 
 .popup-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    cursor: move;
+    font-weight: bold;
 }
 
-.popup-header-left {
+.popup-body {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 10px;
 }
 
 .popup-thumb {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px;
+    width: 100%;
+    height: 160px;
     object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--accent-color);
 }
 
-.popup-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-#playlist {
-    margin-top: 10px;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-.track {
-    padding: 5px;
+.ctrl-btn {
+    padding: 5px 10px;
     cursor: pointer;
-    border-bottom: 1px solid #333;
-}
-
-.track:hover {
-    background: #222;
+    font-family: 'Comic Sans MS', cursive;
 }
 
 .search-box {
-    margin-top: 10px;
     width: 100%;
     padding: 5px;
-    border-radius: 5px;
-    border: none;
+    font-family: 'Comic Sans MS', cursive;
 }
+
 
 /* Hidden YouTube player */
 #ytplayer {
@@ -165,197 +144,39 @@ body {
         <div id="now-playing">Select a song</div>
     </div>
 
-    <div id="main-playlist" class="button-grid"></div> 
+    <div id="main-playlist" class="button-grid"></div>
 </div>
 
 <!-- POPUP -->
 <div id="music-popup" class="popup-player">
-
     <div class="popup-header">
-        <div class="popup-header-left">
-            <img id="popup-thumb" class="popup-thumb" src="">
-            <span id="popup-title">Nothing Playing</span>
-        </div>
+        <span id="popup-title">Nothing Playing</span>
         <button onclick="togglePopup(false)">×</button>
     </div>
 
-    <!-- SEARCH -->
-    <input id="search-input" class="search-box" placeholder="Search songs..." oninput="filterSongs()">
+    <div class="popup-body">
+        <img id="popup-thumb" class="popup-thumb" />
 
-    <div class="popup-controls">
-        <button onclick="skip(-10)">«</button>
-        <button onclick="togglePlay()">▶</button>
-        <button onclick="skip(10)">»</button>
-    </div>
+        <input id="search-input" class="search-box" placeholder="Search YouTube..." />
+        <button onclick="searchYouTube()" class="ctrl-btn">Search & Play</button>
 
-    <div id="playlist"></div>
+        <div>
+            <button onclick="skip(-10)" class="ctrl-btn">«</button>
+            <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
+            <button onclick="skip(10)" class="ctrl-btn">»</button>
+        </div>
 
-    <div style="margin-top:10px;">
-        <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)">
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01"
+               oninput="adjustVolume(this.value)">
     </div>
 </div>
-
-<!-- YouTube -->
-<div id="ytplayer"></div>
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<script>
-let player;
-let queue = [];
-let currentIndex = 0;
-let isPlaying = false;
-let playerReady = false;
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('ytplayer', {
-        height: '1',
-        width: '1',
-        videoId: '',
-        playerVars: {
-            autoplay: 1,
-            playsinline: 1
-        },
-        events: {
-            onReady: () => playerReady = true,
-            onStateChange: onStateChange
-        }
-    });
-}
-
-function onStateChange(e) {
-    if (e.data === YT.PlayerState.ENDED) {
-        currentIndex++;
-        if (currentIndex < queue.length) {
-            playFromQueue();
-        }
-    }
-}
-
-function playSong(title, url, image) {
-    let id = extractYouTubeID(url);
-
-    queue.push({ id, title, image });
-
-    if (queue.length === 1) {
-        currentIndex = 0;
-        playFromQueue();
-    }
-
-    renderQueue();
-    togglePopup(true);
-}
-
-function playFromQueue() {
-    let item = queue[currentIndex];
-    if (!item || !playerReady) return;
-
-    document.getElementById("now-playing").textContent = item.title;
-    document.getElementById("popup-title").textContent = item.title;
-    document.getElementById("popup-thumb").src = item.image;
-
-    player.loadVideoById(item.id);
-
-    setTimeout(() => {
-        player.playVideo();
-    }, 300);
-
-    isPlaying = true;
-}
-
-function extractYouTubeID(url) {
-    let match = url.match(/(?:v=|youtu\.be\/)([^&]+)/);
-    return match ? match[1] : url;
-}
-
-function togglePlay() {
-    if (isPlaying) {
-        player.pauseVideo();
-    } else {
-        player.playVideo();
-    }
-    isPlaying = !isPlaying;
-}
-
-function skip(seconds) {
-    let t = player.getCurrentTime();
-    player.seekTo(t + seconds, true);
-}
-
-function adjustVolume(v) {
-    player.setVolume(v * 100);
-}
-
-function togglePopup(show) {
-    document.getElementById("music-popup").style.display = show ? "block" : "none";
-}
-
-function renderQueue() {
-    let el = document.getElementById("playlist");
-    el.innerHTML = "";
-
-    queue.forEach((song, i) => {
-        let div = document.createElement("div");
-        div.className = "track";
-        div.textContent = (i === currentIndex ? "▶ " : "") + song.title;
-
-        div.onclick = () => {
-            currentIndex = i;
-            playFromQueue();
-        };
-
-        el.appendChild(div);
-    });
-}
-
-/* SEARCH FUNCTION */
-function filterSongs() {
-    const query = document.getElementById("search-input").value.toLowerCase();
-    const el = document.getElementById("playlist");
-    el.innerHTML = "";
-
-    queue
-        .filter(song => song.title.toLowerCase().includes(query))
-        .forEach((song, i) => {
-            let div = document.createElement("div");
-            div.className = "track";
-            div.textContent = song.title;
-
-            div.onclick = () => {
-                currentIndex = queue.indexOf(song);
-                playFromQueue();
-            };
-
-            el.appendChild(div);
-        });
-}
-</script>
 
 <script src="music.js"></script>
 <script src="spores.js"></script>
 
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-    const mainGrid = document.getElementById('main-playlist');
-
-    if (mainGrid && typeof songList !== 'undefined') {
-        songList.forEach(song => {
-            const btn = document.createElement('button');
-            btn.className = "music-card";
-
-            btn.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${song.image}')`;
-            btn.innerHTML = song.title;
-
-            btn.onclick = () => playSong(song.title, song.url, song.image);
-
-            mainGrid.appendChild(btn);
-        });
-    }
-});
-</script>
-
-<!-- Cloudflare Web Analytics -->
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2fb5e9188fd9485ca71dcc4ab49bf350"}'></script>
-<!-- End Cloudflare Web Analytics -->
+<!-- Cloudflare -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+data-cf-beacon='{"token": "2fb5e9188fd9485ca71dcc4ab49bf350"}'></script>
 
 </body>
 </html>
