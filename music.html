@@ -5,65 +5,125 @@
     <link id="favicon" rel="icon" type="image/png" href="https://codehs.com/uploads/dbf77e4f4711feb9506d37e52b30a2dd">
 
 <script> 
-    setTheme('ocean') // runs BEFORE theme.js loads 
+    setTheme('ocean')
 </script>
 <script src="theme.js"></script>
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
-    <style>
-        body {
-            background-color: var(--bg-color);
-            color: white;
-            margin: 0;
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive; !important
-            transition: background-color 0.3s ease;
-        }
-        .content {
-            text-align: center;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .glow-text {
-            color: #fff;
-            text-shadow: 0 0 7px var(--accent-color), 0 0 10px var(--accent-color), 0 0 21px var(--accent-color);
-            animation: pulse-glow 2s infinite alternate;
-        }
-        @keyframes pulse-glow {
-            from { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); }
-            to { text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
-        }
-        .image-container {
-            background-color: rgba(128, 128, 128, 0.4);
-            border-radius: 15px;
-            padding: 20px;
-            display: inline-block;
-            margin-bottom: 30px;
-            border: 2px solid var(--accent-color);
-        }
+<style>
+body {
+    background-color: var(--bg-color);
+    color: white;
+    margin: 0;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+}
 
-        /* Matches the Game Launcher Grid Size */
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            width: 90%;
-            max-width: 1000px;
-            margin-bottom: 50px;
-        }
+* {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
+}
 
-        /* Specific Hover for Music Page */
-        .music-card:hover {
-            transform: scale(1.05); /* Grows like game buttons */
-            box-shadow: 0 0 20px var(--accent-color);
-        }
-        
-        .music-card:active {
-            transform: scale(0.98); /* Shrinks slightly on click */
-        }
-    </style>
+.content {
+    text-align: center;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.glow-text {
+    color: #fff;
+    text-shadow: 0 0 7px var(--accent-color), 0 0 10px var(--accent-color), 0 0 21px var(--accent-color);
+}
+
+.image-container {
+    background-color: rgba(128, 128, 128, 0.4);
+    border-radius: 15px;
+    padding: 20px;
+    display: inline-block;
+    margin-bottom: 30px;
+    border: 2px solid var(--accent-color);
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    width: 90%;
+    max-width: 1000px;
+    margin-bottom: 50px;
+}
+
+.music-card {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 40px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    font-size: 16px;
+    text-shadow: 0 0 5px black;
+}
+
+.music-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-color);
+}
+
+/* Popup */
+.popup-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: #111;
+    border: 2px solid var(--accent-color);
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+    z-index: 999;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#playlist {
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.track {
+    padding: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
+}
+
+.track:hover {
+    background: #222;
+}
+
+/* Hidden YouTube player */
+#ytplayer {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    opacity: 0.01;
+    pointer-events: none;
+}
+</style>
 </head>
+
 <body>
 
 <nav class="navbar">
@@ -76,45 +136,148 @@
         <a href="settings.html" class="nav-link" title = "Brings you to the settings page" alt = "settings page navigation button">Settings</a>
     </div>
 </nav>
+
 <div class="content">
     <h1 class="glow-text">Fungi Jams</h1>
+
     <div class="image-container">
         <div id="now-playing">Select a song</div>
     </div>
+
     <div id="main-playlist" class="button-grid"></div> 
-    <!-- Container updated to match Launcher Grid exactly -->
-
-        <!-- Buttons will be injected here -->
-        
-    </div>
 </div>
 
-<!-- GLOBAL MUSIC POPUP -->
+<!-- POPUP -->
 <div id="music-popup" class="popup-player">
-    <div class="resizer t"></div><div class="resizer b"></div>
-    <div class="resizer l"></div><div class="resizer r"></div>
-    <div class="resizer tl"></div><div class="resizer tr"></div>
-    <div class="resizer bl"></div><div class="resizer br"></div>
-
-    <div class="popup-header" style="cursor: move;">
+    <div class="popup-header">
         <span id="popup-title">Nothing Playing</span>
-        <button onclick="togglePopup(false)" style="background:#DE3412; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">×</button>
+        <button onclick="togglePopup(false)">×</button>
     </div>
-    
+
     <div class="popup-controls">
-        <button onclick="skip(-10)" class="ctrl-btn">«</button>
-        <button id="master-play-btn" onclick="togglePlay()" class="ctrl-btn">▶</button>
-        <button onclick="skip(10)" class="ctrl-btn">»</button>
+        <button onclick="skip(-10)">«</button>
+        <button onclick="togglePlay()">▶</button>
+        <button onclick="skip(10)">»</button>
     </div>
 
-    <!-- Fix: forced overflow-x hidden and enabled y-axis scrollbar -->
-    <div id="playlist" style="margin-top:10px; max-height: 50vh; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; width: 100%; box-sizing: border-box;"></div>
+    <div id="playlist"></div>
 
-    <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; width: 100%;">
-        <span>🎚</span>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)" style="flex-grow: 1; accent-color: var(--accent-color);">
+    <div style="margin-top:10px;">
+        <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(this.value)">
     </div>
 </div>
+
+<!-- YouTube -->
+<div id="ytplayer"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+let player;
+let queue = [];
+let currentIndex = 0;
+let isPlaying = false;
+let playerReady = false;
+
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('ytplayer', {
+        height: '1',
+        width: '1',
+        videoId: '',
+        playerVars: {
+            autoplay: 1,
+            playsinline: 1
+        },
+        events: {
+            onReady: () => playerReady = true,
+            onStateChange: onStateChange
+        }
+    });
+}
+
+function onStateChange(e) {
+    if (e.data === YT.PlayerState.ENDED) {
+        currentIndex++;
+        if (currentIndex < queue.length) {
+            playFromQueue();
+        }
+    }
+}
+
+function playSong(title, url) {
+    let id = extractYouTubeID(url);
+
+    queue.push({ id, title });
+
+    if (queue.length === 1) {
+        currentIndex = 0;
+        playFromQueue();
+    }
+
+    renderQueue();
+    togglePopup(true);
+}
+
+function playFromQueue() {
+    let item = queue[currentIndex];
+    if (!item || !playerReady) return;
+
+    document.getElementById("now-playing").textContent = item.title;
+    document.getElementById("popup-title").textContent = item.title;
+
+    player.loadVideoById(item.id);
+
+    setTimeout(() => {
+        player.playVideo();
+    }, 300);
+
+    isPlaying = true;
+}
+
+function extractYouTubeID(url) {
+    let match = url.match(/(?:v=|youtu\.be\/)([^&]+)/);
+    return match ? match[1] : url;
+}
+
+function togglePlay() {
+    if (isPlaying) {
+        player.pauseVideo();
+    } else {
+        player.playVideo();
+    }
+    isPlaying = !isPlaying;
+}
+
+function skip(seconds) {
+    let t = player.getCurrentTime();
+    player.seekTo(t + seconds, true);
+}
+
+function adjustVolume(v) {
+    player.setVolume(v * 100);
+}
+
+function togglePopup(show) {
+    document.getElementById("music-popup").style.display = show ? "block" : "none";
+}
+
+function renderQueue() {
+    let el = document.getElementById("playlist");
+    el.innerHTML = "";
+
+    queue.forEach((song, i) => {
+        let div = document.createElement("div");
+        div.className = "track";
+        div.textContent = (i === currentIndex ? "▶ " : "") + song.title;
+
+        div.onclick = () => {
+            currentIndex = i;
+            playFromQueue();
+        };
+
+        el.appendChild(div);
+    });
+}
+</script>
 
 <script src="music.js"></script>
 <script src="spores.js"></script>
@@ -122,20 +285,26 @@
 <script>
 window.addEventListener('DOMContentLoaded', () => {
     const mainGrid = document.getElementById('main-playlist');
+
     if (mainGrid && typeof songList !== 'undefined') {
         songList.forEach(song => {
             const btn = document.createElement('button');
-            btn.className = "music-card"; 
-            // Only set the background image here; let CSS handle the size/shape
+            btn.className = "music-card";
+
             btn.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${song.image}')`;
             btn.innerHTML = song.title;
+
             btn.onclick = () => playSong(song.title, song.url);
+
             mainGrid.appendChild(btn);
         });
     }
 });
-
 </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2fb5e9188fd9485ca71dcc4ab49bf350"}'></script><!-- End Cloudflare Web Analytics -->
+
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2fb5e9188fd9485ca71dcc4ab49bf350"}'></script>
+<!-- End Cloudflare Web Analytics -->
+
 </body>
 </html>
